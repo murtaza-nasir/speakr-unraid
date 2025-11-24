@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>Speakr</Name>
+  <Repository>learnedmachine/speakr</Repository>
+  <Registry>https://hub.docker.com/r/learnedmachine/speakr</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/murtaza-nasir/speakr/discussions</Support>
+  <Project>https://github.com/murtaza-nasir/speakr</Project>
+  <Overview>Speakr is a self-hosted AI transcription and intelligent note-taking platform. Transform your audio recordings into organized, searchable, and intelligent notes with speaker identification, AI chat, semantic search, and collaboration features.&#xD;
+&#xD;
+Key Features:&#xD;
+- AI-powered transcription with speaker identification&#xD;
+- Voice profiles for automatic speaker recognition&#xD;
+- Interactive chat with your recordings&#xD;
+- Semantic search across all recordings (Inquire Mode)&#xD;
+- Internal sharing and group collaboration&#xD;
+- Smart tagging with custom AI prompts&#xD;
+- Auto-deletion and retention policies&#xD;
+- Automated export to Obsidian/Logseq&#xD;
+- Full internationalization (EN, ES, FR, DE, ZH)&#xD;
+- Light/dark themes with customizable colors&#xD;
+&#xD;
+IMPORTANT: Requires API keys for OpenAI/OpenRouter or local AI services for transcription and text generation.</Overview>
+  <Category>MediaApp:Other Productivity: Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8899]</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/murtaza-nasir/speakr-unraid/master/speakr.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/murtaza-nasir/speakr/master/static/img/icon-512x512.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires>&#xD;
+Before starting, you MUST configure API keys:&#xD;
+1. Create a .env file or use environment variables&#xD;
+2. Set TEXT_MODEL_API_KEY (OpenRouter or OpenAI)&#xD;
+3. Set TRANSCRIPTION_API_KEY (OpenAI Whisper)&#xD;
+4. Set ADMIN_USERNAME and ADMIN_PASSWORD&#xD;
+&#xD;
+See the GitHub documentation for complete setup instructions.</Requires>
+  <Config Name="WebUI Port" Target="8899" Default="8899" Mode="tcp" Description="Web interface port" Type="Port" Display="always" Required="true" Mask="false">8899</Config>
+
+  <Config Name="Uploads Volume" Target="/data/uploads" Default="/mnt/user/appdata/speakr/uploads" Mode="rw" Description="Storage for uploaded audio files" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/speakr/uploads</Config>
+  <Config Name="Database Volume" Target="/data/instance" Default="/mnt/user/appdata/speakr/instance" Mode="rw" Description="Database and application state" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/speakr/instance</Config>
+  <Config Name="Exports Volume" Target="/data/exports" Default="/mnt/user/appdata/speakr/exports" Mode="rw" Description="Exported transcriptions (for Obsidian, etc.)" Type="Path" Display="advanced" Required="false" Mask="false">/mnt/user/appdata/speakr/exports</Config>
+  <Config Name="Auto-Process Volume" Target="/data/auto-process" Default="/mnt/user/appdata/speakr/auto-process" Mode="rw" Description="Watch directory for automatic file processing" Type="Path" Display="advanced" Required="false" Mask="false">/mnt/user/appdata/speakr/auto-process</Config>
+
+  <!-- Critical Configuration -->
+  <Config Name="Text Model API Key" Target="TEXT_MODEL_API_KEY" Default="" Mode="" Description="API key for OpenRouter or OpenAI (required for summaries)" Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="Text Model Base URL" Target="TEXT_MODEL_BASE_URL" Default="https://openrouter.ai/api/v1" Mode="" Description="API endpoint for text generation" Type="Variable" Display="always" Required="true" Mask="false">https://openrouter.ai/api/v1</Config>
+  <Config Name="Text Model Name" Target="TEXT_MODEL_NAME" Default="openai/gpt-4o-mini" Mode="" Description="Model name for text generation" Type="Variable" Display="always" Required="true" Mask="false">openai/gpt-4o-mini</Config>
+
+  <Config Name="Transcription API Key" Target="TRANSCRIPTION_API_KEY" Default="" Mode="" Description="OpenAI API key for Whisper transcription (required)" Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="Transcription Base URL" Target="TRANSCRIPTION_BASE_URL" Default="https://api.openai.com/v1" Mode="" Description="Whisper API endpoint" Type="Variable" Display="always" Required="true" Mask="false">https://api.openai.com/v1</Config>
+  <Config Name="Whisper Model" Target="WHISPER_MODEL" Default="whisper-1" Mode="" Description="Whisper model to use" Type="Variable" Display="advanced" Required="false" Mask="false">whisper-1</Config>
+
+  <!-- Admin Account -->
+  <Config Name="Admin Username" Target="ADMIN_USERNAME" Default="admin" Mode="" Description="Initial admin username" Type="Variable" Display="always" Required="true" Mask="false">admin</Config>
+  <Config Name="Admin Email" Target="ADMIN_EMAIL" Default="admin@example.com" Mode="" Description="Initial admin email" Type="Variable" Display="always" Required="true" Mask="false">admin@example.com</Config>
+  <Config Name="Admin Password" Target="ADMIN_PASSWORD" Default="" Mode="" Description="Initial admin password (CHANGE THIS!)" Type="Variable" Display="always" Required="true" Mask="true"/>
+
+  <!-- Application Settings -->
+  <Config Name="Allow Registration" Target="ALLOW_REGISTRATION" Default="false" Mode="" Description="Allow new user registration (true/false)" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="Timezone" Target="TIMEZONE" Default="UTC" Mode="" Description="Timezone for date/time display (e.g., America/New_York)" Type="Variable" Display="always" Required="false" Mask="false">UTC</Config>
+  <Config Name="Log Level" Target="LOG_LEVEL" Default="INFO" Mode="" Description="Logging level: DEBUG, INFO, WARNING, ERROR" Type="Variable" Display="advanced" Required="false" Mask="false">INFO</Config>
+
+  <!-- Token Limits -->
+  <Config Name="Summary Max Tokens" Target="SUMMARY_MAX_TOKENS" Default="8000" Mode="" Description="Maximum tokens for AI summaries" Type="Variable" Display="advanced" Required="false" Mask="false">8000</Config>
+  <Config Name="Chat Max Tokens" Target="CHAT_MAX_TOKENS" Default="5000" Mode="" Description="Maximum tokens for chat responses" Type="Variable" Display="advanced" Required="false" Mask="false">5000</Config>
+
+  <!-- File Chunking -->
+  <Config Name="Enable Chunking" Target="ENABLE_CHUNKING" Default="true" Mode="" Description="Split large files for API limits (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">true</Config>
+  <Config Name="Chunk Limit" Target="CHUNK_LIMIT" Default="20MB" Mode="" Description="Chunk size limit (e.g., 20MB or 1200s)" Type="Variable" Display="advanced" Required="false" Mask="false">20MB</Config>
+  <Config Name="Chunk Overlap Seconds" Target="CHUNK_OVERLAP_SECONDS" Default="3" Mode="" Description="Overlap between chunks in seconds" Type="Variable" Display="advanced" Required="false" Mask="false">3</Config>
+
+  <!-- Inquire Mode (Semantic Search) -->
+  <Config Name="Enable Inquire Mode" Target="ENABLE_INQUIRE_MODE" Default="false" Mode="" Description="Enable AI-powered semantic search across recordings (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">false</Config>
+
+  <!-- Auto-Processing -->
+  <Config Name="Enable Auto Processing" Target="ENABLE_AUTO_PROCESSING" Default="false" Mode="" Description="Watch directory for automatic file processing (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">false</Config>
+  <Config Name="Auto Process Mode" Target="AUTO_PROCESS_MODE" Default="admin_only" Mode="" Description="Processing mode: admin_only, user_directories, or single_user" Type="Variable" Display="advanced" Required="false" Mask="false">admin_only</Config>
+  <Config Name="Auto Process Check Interval" Target="AUTO_PROCESS_CHECK_INTERVAL" Default="30" Mode="" Description="Check interval for new files (seconds)" Type="Variable" Display="advanced" Required="false" Mask="false">30</Config>
+
+  <!-- Auto-Export -->
+  <Config Name="Enable Auto Export" Target="ENABLE_AUTO_EXPORT" Default="false" Mode="" Description="Automatically export transcriptions to markdown (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">false</Config>
+  <Config Name="Auto Export Transcription" Target="AUTO_EXPORT_TRANSCRIPTION" Default="true" Mode="" Description="Include transcription in exports (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">true</Config>
+  <Config Name="Auto Export Summary" Target="AUTO_EXPORT_SUMMARY" Default="true" Mode="" Description="Include summary in exports (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">true</Config>
+
+  <!-- Retention & Deletion -->
+  <Config Name="Enable Auto Deletion" Target="ENABLE_AUTO_DELETION" Default="false" Mode="" Description="Enable automatic deletion of old recordings (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">false</Config>
+  <Config Name="Global Retention Days" Target="GLOBAL_RETENTION_DAYS" Default="90" Mode="" Description="Days to retain recordings (0 = disabled)" Type="Variable" Display="advanced" Required="false" Mask="false">90</Config>
+  <Config Name="Deletion Mode" Target="DELETION_MODE" Default="audio_only" Mode="" Description="Deletion mode: audio_only or full_recording" Type="Variable" Display="advanced" Required="false" Mask="false">audio_only</Config>
+  <Config Name="Users Can Delete" Target="USERS_CAN_DELETE" Default="true" Mode="" Description="Allow users to delete their own recordings (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">true</Config>
+
+  <!-- Sharing Settings -->
+  <Config Name="Enable Internal Sharing" Target="ENABLE_INTERNAL_SHARING" Default="false" Mode="" Description="Enable user-to-user sharing (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">false</Config>
+  <Config Name="Show Usernames in UI" Target="SHOW_USERNAMES_IN_UI" Default="false" Mode="" Description="Display usernames in interface (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">false</Config>
+  <Config Name="Enable Public Sharing" Target="ENABLE_PUBLIC_SHARING" Default="true" Mode="" Description="Allow public share links (true/false)" Type="Variable" Display="advanced" Required="false" Mask="false">true</Config>
+
+  <!-- Database Path (usually don't change) -->
+  <Config Name="Database URI" Target="SQLALCHEMY_DATABASE_URI" Default="sqlite:////data/instance/transcriptions.db" Mode="" Description="Database connection string" Type="Variable" Display="advanced" Required="false" Mask="false">sqlite:////data/instance/transcriptions.db</Config>
+</Container>
