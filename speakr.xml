@@ -7,7 +7,7 @@
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support>https://github.com/murtaza-nasir/speakr/discussions</Support>
+  <Support>https://forums.unraid.net/topic/195323-support-speakr-ai-transcription-note-taking-platform/</Support>
   <Project>https://github.com/murtaza-nasir/speakr</Project>
   <Overview>Speakr is a self-hosted AI transcription and intelligent note-taking platform. Transform your audio recordings into organized, searchable, and intelligent notes with speaker identification, AI chat, semantic search, and collaboration features.&#xD;
 &#xD;
